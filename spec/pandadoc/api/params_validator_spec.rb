@@ -11,10 +11,10 @@ describe Pandadoc::Api::ParamsValidator do
     describe 'passes validations' do
       describe 'invalid parameter' do
         it 'returns only the valid params' do
-          params = { valid: '1', invalid: '2' }
-          validations = { valid: { required: false, type: String } }
+          params = { valid: '1', invalid: '2', images: [{ name: 'Image1', urls: ['https://google.com'] }] }
+          validations = { valid: { required: false, type: String }, images: { required: false, type: Array } }
 
-          expect(described_class.validate(params, validations)).to eq(valid: '1')
+          expect(described_class.validate(params, validations)).to eq(valid: '1', images: [{ name: 'Image1', urls: ['https://google.com'] }])
         end
       end
     end

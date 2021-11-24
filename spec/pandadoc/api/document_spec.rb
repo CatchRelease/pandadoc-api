@@ -44,7 +44,7 @@ describe Pandadoc::Api::Document do
     end
 
     it 'passes validated params' do
-      params = { name: 'My Doc', template_uuid: '1234', recipients: ['a@a.com'] }
+      params = { name: 'My Doc', template_uuid: '1234', recipients: ['a@a.com'], images: [{ name: 'Image1', urls: ['https://google.com'] }] }
       validated_params = stub_params_validator(params)
 
       subject.create(token, params)
@@ -60,6 +60,14 @@ describe Pandadoc::Api::Document do
 
     it 'allows tags as params' do
       params = { name: 'My Doc', template_uuid: '1234', recipients: ['a@a.com'], tags: ['test_tag'] }
+
+      subject.create(token, params)
+
+      expect(client_spy).to have_received(:post_json).with('/documents', token, params)
+    end
+
+    it 'allows images as params' do
+      params = { name: 'My Doc', template_uuid: '1234', recipients: ['a@a.com'], images: [{ name: 'Image1', urls: ['https://google.com'] }] }
 
       subject.create(token, params)
 
